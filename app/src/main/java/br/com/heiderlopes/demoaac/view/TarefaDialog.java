@@ -58,6 +58,5 @@ public class TarefaDialog extends DialogFragment {
             db.tarefaDao().criarTarefa(params[0]);
             return null;
         }
-
     }
 }

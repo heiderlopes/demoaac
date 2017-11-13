@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 public class ListaTarefasActivity extends AppCompatActivity {
     private FloatingActionButton fab;
-    private RecyclerView rv;
+    private RecyclerView rvTarefas;
     private TarefaAdapter adapter;
     private List<Tarefa> tarefas;
 
@@ -40,7 +40,7 @@ public class ListaTarefasActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         fab = findViewById(R.id.fab);
-        rv = findViewById(R.id.rv);
+        rvTarefas = findViewById(R.id.rvTarefas);
 
         tarefas = new ArrayList<>();
 
@@ -51,13 +51,13 @@ public class ListaTarefasActivity extends AppCompatActivity {
                     @Override
                     public void onChanged(@Nullable List<Tarefa> tarefas) {
                         adapter.setList(tarefas);
-                        rv.getAdapter().notifyDataSetChanged();
+                        rvTarefas.getAdapter().notifyDataSetChanged();
                     }
                 });
 
-        rv.setLayoutManager(new LinearLayoutManager(this));
+        rvTarefas.setLayoutManager(new LinearLayoutManager(this));
         adapter = new TarefaAdapter(tarefas, deleteClick);
-        rv.setAdapter(adapter);
+        rvTarefas.setAdapter(adapter);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
