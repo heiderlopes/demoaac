@@ -18,18 +18,6 @@ public class TarefaModel extends AndroidViewModel {
     }
 
     public LiveData<List<Tarefa>> getTarefas() {
-        /*if (tarefas == null) {
-            tarefas = Transformations.map(tarefas, new Function<List<Tarefa>,
-                    List<Tarefa>>() {
-                @Override
-                public List<Tarefa> apply(List<Tarefa> novasTarefas) {
-                    novasTarefas = new ArrayList<>();
-                    novasTarefas.add(new Tarefa("Bem-vindo",
-                            "Bem-vindo ao mundo dos Architecture Components"));
-                    return novasTarefas;
-                }
-            });
-        }*/
         return tarefas;
     }
 

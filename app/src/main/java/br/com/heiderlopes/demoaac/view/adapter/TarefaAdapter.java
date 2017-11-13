@@ -4,19 +4,24 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
 import br.com.heiderlopes.demoaac.R;
 import br.com.heiderlopes.demoaac.model.Tarefa;
+import br.com.heiderlopes.demoaac.view.listener.OnItemClickListener;
 
 
 public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaViewHolder> {
     private List<Tarefa> tarefas;
 
-    public TarefaAdapter(List<Tarefa> tarefas) {
+    private final OnItemClickListener listener;
+
+    public TarefaAdapter(List<Tarefa> tarefas, OnItemClickListener deleteClick) {
         this.tarefas = tarefas;
+        this.listener = deleteClick;
     }
 
     public void setList(List<Tarefa> tarefas) {
@@ -31,10 +36,17 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
     }
 
     @Override
-    public void onBindViewHolder(TarefaViewHolder holder, int i) {
+    public void onBindViewHolder(TarefaViewHolder holder, final int i) {
         Tarefa tarefa = tarefas.get(i);
         holder.txtTitulo.setText(tarefa.getTitulo());
         holder.txtTarefa.setText(tarefa.getTarefa());
+
+        holder.btApagar.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                listener.onClick(i);
+            }
+        });
+
     }
 
     @Override
@@ -44,11 +56,17 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaView
 
     public static class TarefaViewHolder extends RecyclerView.ViewHolder {
         TextView txtTitulo, txtTarefa;
+        ImageView btApagar;
 
         public TarefaViewHolder(View v) {
             super(v);
             txtTitulo = v.findViewById(R.id.txtTitulo);
             txtTarefa = v.findViewById(R.id.txtTarefa);
+            btApagar = v.findViewById(R.id.btApagar);
         }
+    }
+
+    public Tarefa getTarefa(int position) {
+        return tarefas.get(position);
     }
 }

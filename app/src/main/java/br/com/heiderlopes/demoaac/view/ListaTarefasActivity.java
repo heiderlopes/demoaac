@@ -2,14 +2,17 @@ package br.com.heiderlopes.demoaac.view;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 
 import java.util.List;
 
 import br.com.heiderlopes.demoaac.R;
+import br.com.heiderlopes.demoaac.dao.BaseDados;
 import br.com.heiderlopes.demoaac.model.Tarefa;
 import br.com.heiderlopes.demoaac.view.adapter.TarefaAdapter;
+import br.com.heiderlopes.demoaac.view.listener.OnItemClickListener;
 import br.com.heiderlopes.demoaac.viewmodel.TarefaModel;
 
 import android.support.design.widget.FloatingActionButton;
@@ -18,10 +21,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class ListaTarefasActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private RecyclerView rv;
     private TarefaAdapter adapter;
@@ -52,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         rv.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new TarefaAdapter(tarefas);
+        adapter = new TarefaAdapter(tarefas, deleteClick);
         rv.setAdapter(adapter);
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -62,5 +66,34 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show(getFragmentManager(), "CriarTarefa");
             }
         });
+    }
+
+    private OnItemClickListener deleteClick = new OnItemClickListener() {
+        @Override
+        public void onClick(int position) {
+            BaseDados db = BaseDados.getDatabase(ListaTarefasActivity.this.getApplicationContext());
+            new ApagarAsyncTask(db).execute(adapter.getTarefa(position));
+        }
+    };
+
+    private class ApagarAsyncTask extends AsyncTask<Tarefa, Void, Void> {
+
+        private BaseDados db;
+
+        ApagarAsyncTask(BaseDados appDatabase) {
+            db = appDatabase;
+        }
+
+        @Override
+        protected Void doInBackground(final Tarefa... params) {
+            db.tarefaDao().apagar(params[0]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Toast.makeText(ListaTarefasActivity.this, "Registro excluído com sucesso", Toast.LENGTH_SHORT).show();
+        }
     }
 }

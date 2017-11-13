@@ -50,17 +50,18 @@
             android:layout_weight="0"
             android:orientation="horizontal">
 
-            <ImageView
+            <!--<ImageView
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/editar"
-                android:padding="16dp" />
+                android:padding="16dp" />-->
 
             <ImageView
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/apagar"
-                android:padding="16dp"/>
+                android:padding="16dp"
+                android:id="@+id/btApagar"/>
 
         </LinearLayout>
 
